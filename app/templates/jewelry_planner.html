@@ -1,0 +1,681 @@
+{% extends "base.html" %}
+{% block title %}Jewelry Budget Planner — PocketSmart AI{% endblock %}
+{% block meta_description %}Upload your outfit photo and let Gemini AI recommend matching jewelry within your budget.{% endblock %}
+{% block nav_jewelry %}active{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ── Page Layout ── */
+  .planner-hero {
+    background-color: var(--primary);
+    color: white;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  .planner-hero h1 { color: white; font-size: 2rem; margin-bottom: 0.5rem; }
+  .planner-hero p { color: #c7d7e8; font-size: 1rem; margin: 0; }
+
+  .planner-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── Section Cards ── */
+  .form-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .form-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--bg-main);
+  }
+
+  /* ── Image Upload Zone ── */
+  .upload-zone {
+    border: 2px dashed #c7d7e8;
+    border-radius: var(--radius-lg);
+    background-color: #f8fafd;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--primary);
+    background-color: #eff6ff;
+  }
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .upload-zone-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .upload-zone-title { font-weight: 600; color: var(--primary); margin-bottom: 0.25rem; }
+  .upload-zone-hint { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ── Image Preview ── */
+  .image-preview-box {
+    display: none;
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 2px solid var(--primary);
+    background: #f8fafd;
+  }
+  .image-preview-box img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    display: block;
+  }
+  .image-preview-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(27,58,87,0.85));
+    color: white;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn-remove-img {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    border-radius: 99px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-remove-img:hover { background: rgba(255,0,0,0.4); }
+
+  /* ── Checkboxes ── */
+  .chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: white;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip-label input { display: none; }
+  .chip-label.checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 600;
+  }
+
+  /* ── Grid ── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── Submit Button ── */
+  .btn-analyze {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .btn-analyze:hover { background-color: var(--primary-hover); }
+  .btn-analyze:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  /* ── Results ── */
+  .results-panel {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-top: 2rem;
+    display: none;
+  }
+  .results-panel.show { display: block; }
+  .results-panel-header {
+    background-color: var(--primary);
+    color: white;
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .results-panel-header h2 { color: white; margin: 0; font-size: 1.25rem; }
+  .ai-badge {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    font-weight: 600;
+  }
+  .results-panel-body { padding: 1.75rem; }
+
+  /* Budget stats */
+  .budget-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .budget-stat-box {
+    background: var(--bg-main);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .budget-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+  .budget-stat-amount { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .budget-stat-amount.spent { color: #f97316; }
+  .budget-stat-amount.saved { color: var(--success); }
+  .budget-stat-amount.over { color: var(--danger); }
+
+  /* Outfit analysis card */
+  .outfit-analysis-box {
+    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .outfit-analysis-box h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+  /* Allocation bars */
+  .alloc-item { margin-bottom: 0.75rem; }
+  .alloc-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; }
+  .alloc-bar-bg { background: var(--bg-main); border-radius: 99px; height: 8px; overflow: hidden; }
+  .alloc-bar-fill { background: var(--primary); border-radius: 99px; height: 100%; transition: width 0.8s ease; }
+
+  /* Recs table */
+  .rec-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .rec-table th { background: #f8fafd; padding: 0.75rem; text-align: left; color: var(--text-muted); font-weight: 600; border-bottom: 2px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .rec-table td { padding: 1rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .rec-table tr:last-child td { border-bottom: none; }
+  .rec-name { font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+  .rec-reason { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .rec-platform { font-size: 0.75rem; color: var(--secondary); margin-top: 0.25rem; }
+  .rec-price { font-weight: 700; color: var(--primary); white-space: nowrap; }
+  .style-tag { display: inline-block; background: #eff6ff; color: var(--primary); border-radius: 99px; padding: 0.15rem 0.6rem; font-size: 0.7rem; font-weight: 600; margin-top: 0.25rem; }
+
+  /* Error */
+  .error-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-md);
+    color: #991b1b;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .error-box.show { display: flex; gap: 0.5rem; align-items: flex-start; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin { display: inline-block; animation: spin 1s linear infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="planner-hero">
+  <div class="container">
+    <nav style="font-size: 0.85rem; margin-bottom: 0.75rem; opacity: 0.75;">
+      <a href="/dashboard" style="color: white;">Dashboard</a> › <span>Jewelry Planner</span>
+    </nav>
+    <h1 style="display:flex;align-items:center;justify-content:center;gap:0.5rem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+      Jewelry Budget Planner
+    </h1>
+    <p>Upload your outfit photo · Get AI-powered jewelry recommendations · Stay within budget</p>
+  </div>
+</div>
+
+<div class="planner-body">
+
+  <!-- Global Error -->
+  <div class="error-box" id="global-error">
+    <span>⚠️</span>
+    <span id="global-error-msg"></span>
+  </div>
+
+  <form id="jewelry-form" enctype="multipart/form-data">
+
+    <!-- Image Upload -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="camera" style="width:16px;height:16px"></i> Outfit Image <span style="font-weight:400;color:var(--text-muted);font-size:0.8rem;margin-left:0.5rem">(optional — for AI outfit analysis)</span>
+      </div>
+
+      <!-- Drop zone (hidden when preview shown) -->
+      <div class="upload-zone" id="upload-zone">
+        <div class="upload-zone-icon"><i data-lucide="image-plus" style="width:40px;height:40px;color:var(--primary);opacity:0.8"></i></div>
+        <div class="upload-zone-title">Drop your outfit photo here</div>
+        <div class="upload-zone-hint">or click to browse — JPG, PNG, WEBP up to 5 MB</div>
+        <input type="file" id="outfit_image" name="outfit_image" accept="image/jpeg,image/jpg,image/png,image/webp">
+      </div>
+
+      <!-- Preview (hidden until image selected) -->
+      <div class="image-preview-box" id="image-preview-box">
+        <img id="image-preview-img" src="" alt="Outfit preview">
+        <div class="image-preview-overlay">
+          <span id="image-file-name">photo.jpg</span>
+          <button type="button" class="btn-remove-img" id="btn-remove-img" style="display:flex;align-items:center;gap:0.25rem"><i data-lucide="x" style="width:12px;height:12px"></i> Remove</button>
+        </div>
+      </div>
+
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.75rem;margin-bottom:0;display:flex;align-items:center;gap:0.4rem">
+        <i data-lucide="zap" style="width:14px;height:14px;color:var(--gold)"></i>
+        Gemini Vision will analyze outfit colors and style to recommend matching jewelry. Only clothing details are analyzed — no personal identification.
+      </p>
+    </div>
+
+    <!-- Outfit Description (Text Fallback) -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="pen-line" style="width:16px;height:16px"></i> Or Describe Your Outfit <span style="font-weight:400;color:var(--text-muted);font-size:0.8rem;margin-left:0.5rem">(if no image)</span>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" id="outfit_description" name="outfit_description" rows="2"
+          placeholder="e.g. Red silk saree with golden zari border, traditional blouse / Blue evening gown for a reception..."></textarea>
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="indian-rupee" style="width:16px;height:16px"></i> Budget
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label class="form-label" for="budget">Total Jewelry Budget (₹) <span style="color:var(--danger)">*</span></label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;">₹</span>
+          <input class="form-control" type="number" id="budget" name="budget" placeholder="e.g. 15000" min="100" required style="padding-left:2rem;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Occasion & Style -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="sparkles" style="width:16px;height:16px"></i> Occasion &amp; Style
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="occasion">Occasion</label>
+          <select class="form-control" id="occasion" name="occasion">
+            <option value="wedding">💍 Wedding</option>
+            <option value="engagement">💑 Engagement</option>
+            <option value="festival">🪔 Festival / Puja</option>
+            <option value="party">🎉 Party</option>
+            <option value="casual" selected>☀️ Casual / Daily Wear</option>
+            <option value="office">💼 Office / Formal</option>
+            <option value="anniversary">🌹 Anniversary</option>
+            <option value="birthday">🎂 Birthday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="preferred_style">Jewelry Style</label>
+          <select class="form-control" id="preferred_style" name="preferred_style">
+            <option value="traditional">Traditional / Temple</option>
+            <option value="contemporary" selected>Contemporary / Modern</option>
+            <option value="fusion">Fusion</option>
+            <option value="minimalist">Minimalist</option>
+            <option value="statement">Statement / Bold</option>
+            <option value="bridal">Bridal / Heavy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="preferred_metal">Preferred Metal</label>
+          <select class="form-control" id="preferred_metal" name="preferred_metal">
+            <option value="gold" selected>Gold</option>
+            <option value="silver">Silver</option>
+            <option value="rose_gold">Rose Gold</option>
+            <option value="oxidized">Oxidized / Antique</option>
+            <option value="platinum">Platinum</option>
+            <option value="artificial">Artificial / Fashion</option>
+            <option value="kundan">Kundan</option>
+            <option value="meenakari">Meenakari</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jewelry Types -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="gem" style="width:16px;height:16px"></i> Jewelry Types Needed
+      </div>
+      <div class="chip-grid" id="chip-group">
+        {% for jtype in ['Necklace','Earrings','Bangles','Bracelet','Ring','Maang Tikka','Nose Ring','Anklet','Haar / Mala','Brooch'] %}
+        <label class="chip-label {% if jtype in ['Necklace','Earrings'] %}checked{% endif %}" for="jtype-{{ loop.index }}">
+          <input type="checkbox" id="jtype-{{ loop.index }}" name="jewelry_types" value="{{ jtype }}"
+            {% if jtype in ['Necklace','Earrings'] %}checked{% endif %}>
+          {{ jtype }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Additional Preferences -->
+    <div class="form-card">
+      <div class="form-card-title">
+        <i data-lucide="pin" style="width:16px;height:16px"></i> Additional Preferences <span style="font-weight:400;color:var(--text-muted);font-size:0.8rem;margin-left:0.5rem">(optional)</span>
+      </div>
+      <textarea class="form-control" id="additional_preferences" name="additional_preferences" rows="2"
+        placeholder="e.g. Must be hypoallergenic, prefer lightweight pieces, need a complete bridal set..."></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn-analyze" id="btn-analyze">
+      <i data-lucide="brain" style="width:20px;height:20px"></i>
+      Analyze &amp; Get Recommendations
+    </button>
+
+  </form>
+
+  <!-- ── Results Panel ── -->
+  <div id="results-panel" class="mt-xl" style="display:none">
+    <div class="results-header">
+      <h2>💎 Your Jewelry Recommendations</h2>
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <span class="badge badge-ai">✨ AI Generated</span>
+        <span class="badge badge-est">Estimated Prices</span>
+      </div>
+    </div>
+    
+    <div id="res-budget-stats"></div>
+    <div id="res-summary"></div>
+    <div id="res-allocation"></div>
+    <div id="res-recs"></div>
+    <div id="res-notes"></div>
+    
+    <div class="mt-xl" style="text-align:center">
+      <a href="/history" class="btn btn-secondary">View All History →</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  // ── Image Upload Logic ──────────────────────────────────────────────
+  const uploadZone   = document.getElementById('upload-zone');
+  const fileInput    = document.getElementById('outfit_image');
+  const previewBox   = document.getElementById('image-preview-box');
+  const previewImg   = document.getElementById('image-preview-img');
+  const fileNameEl   = document.getElementById('image-file-name');
+  const removeBtn    = document.getElementById('btn-remove-img');
+
+  function showPreview(file) {
+    const allowed = ['image/jpeg','image/jpg','image/png','image/webp'];
+    if (!allowed.includes(file.type)) {
+      showErr('Invalid file type. Please upload JPG, PNG, or WEBP.'); return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showErr('Image must be smaller than 5 MB.'); return;
+    }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      previewImg.src = ev.target.result;
+      fileNameEl.textContent = `${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+      uploadZone.style.display = 'none';
+      previewBox.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearImage() {
+    fileInput.value = '';
+    previewImg.src = '';
+    previewBox.style.display = 'none';
+    uploadZone.style.display = 'block';
+  }
+
+  uploadZone.addEventListener('click', () => fileInput.click());
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault(); uploadZone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) { fileInput.files = e.dataTransfer.files; showPreview(f); }
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) showPreview(fileInput.files[0]); });
+  removeBtn.addEventListener('click', clearImage);
+
+  // ── Chip Checkboxes ─────────────────────────────────────────────────
+  document.querySelectorAll('.chip-label').forEach(label => {
+    const inp = label.querySelector('input');
+    const update = () => label.classList.toggle('checked', inp.checked);
+    inp.addEventListener('change', update);
+    update();
+  });
+
+  // ── Error helpers ───────────────────────────────────────────────────
+  function showErr(msg) {
+    const el = document.getElementById('global-error');
+    document.getElementById('global-error-msg').textContent = msg;
+    el.classList.add('show');
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  function clearErr() {
+    document.getElementById('global-error').classList.remove('show');
+  }
+
+  const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  const esc = s => { const d = document.createElement('div'); d.appendChild(document.createTextNode(String(s||''))); return d.innerHTML; };
+
+  // ── Render Results ──────────────────────────────────────────────────
+  function renderResults(data) {
+    const bs = data.budget_summary;
+    const remaining = bs.remaining;
+    const isOver = remaining < 0;
+
+    // Budget stats
+    document.getElementById('res-budget-stats').innerHTML = `
+      <div class="budget-stat-box">
+        <div class="budget-stat-label">Total Budget</div>
+        <div class="budget-stat-amount">${fmt(bs.total_budget)}</div>
+      </div>
+      <div class="budget-stat-box">
+        <div class="budget-stat-label">Estimated Spend</div>
+        <div class="budget-stat-amount spent">${fmt(bs.estimated_spend)}</div>
+      </div>
+      <div class="budget-stat-box">
+        <div class="budget-stat-label">${isOver ? 'Over Budget' : 'Remaining'}</div>
+        <div class="budget-stat-amount ${isOver ? 'over' : 'saved'}">${fmt(Math.abs(remaining))}</div>
+      </div>`;
+
+    // Outfit analysis + Summary
+    let summaryHtml = data.summary ? `
+      <div class="ai-summary-box animate-fade-in stagger-2">
+        <h4><span style="font-size:1.1rem">📋</span> Plan Overview</h4>
+        <p>${esc(data.summary)}</p>
+        ${data.outfit_analysis && data.outfit_analysis !== 'No image provided' && data.outfit_analysis.trim() ? `
+          <div class="outfit-analysis-box">
+            <h5>👗 Outfit Analysis</h5>
+            <p>${esc(data.outfit_analysis)}</p>
+          </div>` : ''}
+      </div>` : '';
+      
+    document.getElementById('res-outfit-analysis').style.display = 'none'; // handled inside summary box now
+    document.getElementById('res-summary').innerHTML = summaryHtml;
+
+    // Budget allocation
+    const alloc = data.budget_allocation || [];
+    document.getElementById('res-allocation').innerHTML = alloc.length ? `
+      <div class="allocation-section animate-fade-in stagger-3">
+        <h4><span>💰</span> Budget Allocation</h4>
+        <div class="allocation-grid">
+          ${alloc.map(item => {
+            const pct = Math.min(item.percentage || (item.allocated_budget/bs.total_budget*100), 100);
+            return `
+            <div class="allocation-item">
+              <div class="allocation-row">
+                <span class="allocation-category">${esc(item.category)}</span>
+                <div>
+                  <span class="allocation-amount">${fmt(item.allocated_budget)}</span>
+                  <span class="allocation-pct">${pct.toFixed(1)}%</span>
+                </div>
+              </div>
+              <div class="allocation-bar">
+                <div class="allocation-bar-fill" style="width:${pct}%"></div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>` : '';
+
+    // Recommendations grid
+    const recs = data.recommendations || [];
+    document.getElementById('res-recs').innerHTML = recs.length ? `
+      <div class="recommendations-section animate-fade-in stagger-4">
+        <h4><span>🎯</span> Top Recommendations <span class="rec-count">${recs.length} items</span></h4>
+        <div class="recommendations-grid">
+          ${recs.map((rec, i) => `
+            <div class="rec-card stagger-${Math.min(i+1,5)}">
+              <span class="rec-badge-demo">Est. Price</span>
+              <div>
+                <span class="rec-card-category">${esc(rec.category)}</span>
+              </div>
+              <div class="rec-card-header">
+                <div class="rec-card-name">${esc(rec.name)}</div>
+                <div class="rec-card-price">${fmt(rec.estimated_price * rec.quantity)}</div>
+              </div>
+              ${rec.quantity > 1 ? `<div style="font-size:0.8rem;color:var(--text-muted);font-weight:500">Qty: ${rec.quantity} × ${fmt(rec.estimated_price)}</div>` : ''}
+              
+              <div class="rec-card-platform">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                ${esc(rec.platform)}
+              </div>
+              
+              ${rec.style ? `<div style="margin-top:0.25rem"><span class="rec-card-style">${esc(rec.style)}</span></div>` : ''}
+              ${rec.reason ? `<div class="rec-card-reason">${esc(rec.reason)}</div>` : ''}
+              ${rec.url ? `<a href="${esc(rec.url)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="margin-top:auto;align-self:flex-start">View Product ↗</a>` : ''}
+            </div>`).join('')}
+        </div>
+      </div>` : '<p class="text-center text-muted mt-xl">No recommendations generated.</p>';
+
+    // Notes
+    document.getElementById('res-notes').innerHTML = data.ai_notes ? `
+      <div class="ai-notes-box animate-fade-in stagger-5">
+        <strong>💡 AI Stylist Note:</strong> ${esc(data.ai_notes)}
+      </div>` : '';
+
+    // Show panel (Fixing display issue)
+    const panel = document.getElementById('results-panel');
+    panel.style.display = 'block';
+    setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+  }
+
+  // ── Form Submit ─────────────────────────────────────────────────────
+  let submitting = false;
+  const form = document.getElementById('jewelry-form');
+  const btn  = document.getElementById('btn-analyze');
+  const overlay = document.getElementById('loading-overlay');
+  const overlayText = document.getElementById('loading-text');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (submitting) return;
+    clearErr();
+
+    // Validate budget
+    const budget = parseFloat(document.getElementById('budget').value);
+    if (!budget || budget <= 0) { showErr('Please enter a valid budget amount.'); return; }
+
+    // Validate at least one jewelry type
+    const checkedTypes = [...document.querySelectorAll('input[name="jewelry_types"]:checked')];
+    if (!checkedTypes.length) { showErr('Please select at least one jewelry type.'); return; }
+
+    submitting = true;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin">⏳</span> Analyzing with Gemini AI...';
+    if (overlay) { overlay.classList.add('active'); overlayText.textContent = 'Sending to Gemini AI...'; }
+
+    const ticker = setInterval(() => {
+      if (overlayText) overlayText.textContent = 'Analyzing outfit & generating recommendations...';
+    }, 2500);
+
+    try {
+      const fd = new FormData(form);
+      const resp = await fetch('/generate-jewelry', { method:'POST', body:fd, credentials:'include' });
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        const msg = data.error || `Error ${resp.status}`;
+        if (resp.status === 429) showErr('Gemini API quota exceeded. Please try again later.');
+        else if (resp.status === 503) showErr('Gemini API key is not configured. Please check your .env file.');
+        else if (resp.status === 401) { showErr('Session expired. Redirecting to login...'); setTimeout(() => window.location.href='/login', 2000); }
+        else showErr(msg);
+        return;
+      }
+
+      renderResults(data);
+
+    } catch(err) {
+      console.error(err);
+      showErr('Network error. Please check your connection and try again.');
+    } finally {
+      clearInterval(ticker);
+      submitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '🧠 Analyze & Get Recommendations';
+      if (overlay) overlay.classList.remove('active');
+    }
+  });
+
+})();
+</script>
+{% endblock %}

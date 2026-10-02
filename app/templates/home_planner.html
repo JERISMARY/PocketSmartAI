@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %}Home Interior Planner — PocketSmart AI{% endblock %}
+{% block meta_description %}Plan your home interior within budget. Get AI-powered recommendations for lighting, furniture, fans, and decor.{% endblock %}
+{% block nav_home_planner %}active{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container-narrow">
+
+    <!-- Header -->
+    <div class="planner-header">
+      <div class="planner-breadcrumb">
+        <a href="/dashboard"><i data-lucide="layout-dashboard" style="width:12px;height:12px;vertical-align:-1px"></i> Dashboard</a>
+        <span>›</span>
+        <span>Home Interior Planner</span>
+      </div>
+      <h1 style="font-size:clamp(1.5rem,3vw,2rem);display:flex;align-items:center;gap:0.5rem">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home Interior Planner
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.35rem">
+        Enter your budget and requirements. Gemini AI will generate a personalized interior plan.
+      </p>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="form-alert" class="mb-md"></div>
+
+    <!-- Form -->
+    <form id="home-planner-form" action="/generate-home" method="post">
+      <div class="planner-form-card">
+
+        <!-- Budget -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="indian-rupee" style="width:14px;height:14px"></i> Budget
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="budget">Total Budget (₹)</label>
+            <div class="form-input-prefix">
+              <span class="prefix">₹</span>
+              <input class="form-control" type="number" id="budget" name="budget"
+                placeholder="e.g. 50000" min="100" max="10000000" required>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted)">Enter the total amount you want to spend</span>
+          </div>
+        </div>
+
+        <!-- Home Details -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="home" style="width:14px;height:14px"></i> Home Details
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="home_type">Home Type</label>
+              <select class="form-control" id="home_type" name="home_type">
+                <option value="Apartment">🏢 Apartment</option>
+                <option value="Independent House">🏠 Independent House</option>
+                <option value="Studio">🏠 Studio</option>
+                <option value="Villa">🏡 Villa</option>
+                <option value="PG / Hostel Room">🛏️ PG / Hostel Room</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="style">Interior Style</label>
+              <select class="form-control" id="style" name="style">
+                <option value="modern">✨ Modern</option>
+                <option value="minimalist">🤍 Minimalist</option>
+                <option value="traditional">🏛️ Traditional</option>
+                <option value="contemporary">🎨 Contemporary</option>
+                <option value="bohemian">🌿 Bohemian</option>
+                <option value="industrial">⚙️ Industrial</option>
+                <option value="scandinavian">❄️ Scandinavian</option>
+                <option value="rustic">🪵 Rustic</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rooms -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="layout-panel-left" style="width:14px;height:14px"></i> Rooms to Furnish
+          </div>
+          <div class="checkbox-group" id="rooms-group">
+            {% for room in ['Living Room', 'Bedroom', 'Kitchen', 'Dining Room', 'Study / Office', 'Kids Room', 'Bathroom', 'Balcony'] %}
+            <label class="checkbox-label" for="room-{{ loop.index }}">
+              <input type="checkbox" id="room-{{ loop.index }}" name="rooms" value="{{ room }}"
+                {% if room == 'Living Room' %}checked{% endif %}>
+              {% if room == 'Living Room' %}🛋️{% elif room == 'Bedroom' %}🛏️{% elif room == 'Kitchen' %}🍳{% elif room == 'Dining Room' %}🍽️{% elif room == 'Study / Office' %}💻{% elif room == 'Kids Room' %}🧸{% elif room == 'Bathroom' %}🚿{% else %}🌿{% endif %}
+              {{ room }}
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Item Quantities -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="package" style="width:14px;height:14px"></i> Item Quantities
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="num_lights">
+                <i data-lucide="lightbulb" style="width:13px;height:13px;color:var(--gold)"></i> Lights
+              </label>
+              <input class="form-control" type="number" id="num_lights" name="num_lights" value="0" min="0" max="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="num_fans">
+                <i data-lucide="wind" style="width:13px;height:13px;color:var(--accent)"></i> Fans
+              </label>
+              <input class="form-control" type="number" id="num_fans" name="num_fans" value="0" min="0" max="20">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="num_tables">
+                <i data-lucide="table-2" style="width:13px;height:13px;color:var(--primary)"></i> Tables
+              </label>
+              <input class="form-control" type="number" id="num_tables" name="num_tables" value="0" min="0" max="20">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="num_chairs">
+                <i data-lucide="armchair" style="width:13px;height:13px;color:var(--primary)"></i> Chairs
+              </label>
+              <input class="form-control" type="number" id="num_chairs" name="num_chairs" value="0" min="0" max="30">
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Items -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="plus-circle" style="width:14px;height:14px"></i> Additional Requirements
+          </div>
+          <div class="checkbox-group">
+            <label class="checkbox-label" for="need_curtains">
+              <input type="checkbox" id="need_curtains" name="need_curtains">
+              <i data-lucide="layout-panel-top" style="width:13px;height:13px"></i> Curtains
+            </label>
+            <label class="checkbox-label" for="need_storage">
+              <input type="checkbox" id="need_storage" name="need_storage">
+              <i data-lucide="archive" style="width:13px;height:13px"></i> Storage / Shelving
+            </label>
+            <label class="checkbox-label" for="need_wall_decor">
+              <input type="checkbox" id="need_wall_decor" name="need_wall_decor">
+              <i data-lucide="image" style="width:13px;height:13px"></i> Wall Decor
+            </label>
+          </div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="message-square-text" style="width:14px;height:14px"></i> Additional Preferences
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="additional_preferences">Anything specific? (optional)</label>
+            <textarea class="form-control" id="additional_preferences" name="additional_preferences"
+              placeholder="e.g. I prefer earth tones, need pet-friendly materials, have a baby so need soft flooring..."
+              rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <p style="font-size:0.8rem;color:var(--text-muted);margin:0;display:flex;align-items:center;gap:0.4rem">
+            <i data-lucide="zap" style="width:14px;height:14px;color:var(--gold)"></i>
+            Gemini AI will analyze your requirements
+          </p>
+          <button type="submit" class="btn btn-primary btn-lg" id="home-submit-btn" style="display:flex;align-items:center;gap:0.5rem">
+            <i data-lucide="brain" style="width:18px;height:18px"></i>
+            Generate Recommendations
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Results -->
+    <div id="results-section" class="mt-xl" style="display:none">
+      <div class="results-header">
+        <h2>Your Home Interior Plan</h2>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <span class="badge badge-ai">✨ AI Generated</span>
+          <span class="badge badge-est">Estimated Prices</span>
+        </div>
+      </div>
+      <div id="results-budget-overview"></div>
+      <div id="results-summary"></div>
+      <div id="results-allocation"></div>
+      <div id="results-recommendations"></div>
+      <div id="results-notes"></div>
+      <div class="mt-xl" style="text-align:center">
+        <a href="/history" class="btn btn-secondary" id="btn-view-history-home">View All History →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  setupPlannerForm('home-planner-form', '/generate-home', 'home');
+});
+</script>
+{% endblock %}

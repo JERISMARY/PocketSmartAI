@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block title %}Party Planner — PocketSmart AI{% endblock %}
+{% block meta_description %}Plan unforgettable events within budget. AI-powered party planning for birthdays, weddings, corporate events, and more.{% endblock %}
+{% block nav_party %}active{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container-narrow">
+
+    <!-- Header -->
+    <div class="planner-header">
+      <div class="planner-breadcrumb">
+        <a href="/dashboard">Dashboard</a>
+        <span>›</span>
+        <span>Party Planner</span>
+      </div>
+      <h1 style="font-size:clamp(1.5rem,3vw,2rem)">🎉 Party & Event Planner</h1>
+      <p style="color:var(--text-muted);margin-top:0.35rem">
+        Plan any event within your budget. Gemini AI allocates spending across food, venue, decor, and entertainment.
+      </p>
+    </div>
+
+    <div id="form-alert" class="mb-md"></div>
+
+    <form id="party-planner-form" action="/generate-party" method="post">
+      <div class="planner-form-card">
+
+        <!-- Budget -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="indian-rupee" style="width:14px;height:14px"></i> Budget
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="budget">Total Event Budget (₹)</label>
+            <div class="form-input-prefix">
+              <span class="prefix">₹</span>
+              <input class="form-control" type="number" id="budget" name="budget"
+                placeholder="e.g. 25000" min="100" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Details -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="calendar" style="width:14px;height:14px"></i> Event Details
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="event_type">Event Type</label>
+              <select class="form-control" id="event_type" name="event_type">
+                <option value="birthday">🎂 Birthday</option>
+                <option value="wedding">💍 Wedding</option>
+                <option value="corporate">💼 Corporate Event</option>
+                <option value="anniversary">💑 Anniversary</option>
+                <option value="college_event">🎓 College Event</option>
+                <option value="family_gathering">👨‍👩‍👧‍👦 Family Gathering</option>
+                <option value="baby_shower">👶 Baby Shower</option>
+                <option value="farewell">👋 Farewell</option>
+                <option value="other">✨ Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="guest_count">Number of Guests</label>
+              <input class="form-control" type="number" id="guest_count" name="guest_count"
+                value="20" min="1" max="10000" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venue & Location -->
+        <div class="form-section">
+          <div class="form-section-title">Venue & Location</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="venue_type">Venue Type</label>
+              <select class="form-control" id="venue_type" name="venue_type">
+                <option value="home">🏠 Home</option>
+                <option value="banquet_hall">🏛️ Banquet Hall</option>
+                <option value="outdoor">🌳 Outdoor / Garden</option>
+                <option value="restaurant">🍽️ Restaurant</option>
+                <option value="hotel">🏨 Hotel</option>
+                <option value="rooftop">🌆 Rooftop</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="location">City / Location (optional)</label>
+              <input class="form-control" type="text" id="location" name="location"
+                placeholder="e.g. Mumbai, Delhi, Bangalore">
+            </div>
+          </div>
+        </div>
+
+        <!-- Food & Decor -->
+        <div class="form-section">
+          <div class="form-section-title">Food & Decoration</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="food_preference">Food Preference</label>
+              <select class="form-control" id="food_preference" name="food_preference">
+                <option value="veg">🥦 Vegetarian</option>
+                <option value="non-veg">🍗 Non-Vegetarian</option>
+                <option value="both">🍱 Both</option>
+                <option value="jain">🌿 Jain</option>
+                <option value="snacks_only">🥪 Snacks Only</option>
+                <option value="cake_and_snacks">🎂 Cake & Snacks</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="decoration_style">Decoration Style</label>
+              <select class="form-control" id="decoration_style" name="decoration_style">
+                <option value="simple">Simple & Elegant</option>
+                <option value="themed">Themed</option>
+                <option value="floral">Floral</option>
+                <option value="balloon">Balloon Decor</option>
+                <option value="traditional">Traditional</option>
+                <option value="minimal">Minimal</option>
+                <option value="grand">Grand & Luxurious</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Services -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <i data-lucide="plus-square" style="width:14px;height:14px"></i> Additional Services
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;">
+            
+            <!-- Photography -->
+            <div style="display:flex;align-items:center;background:var(--bg-main);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem 1rem;">
+              <input type="checkbox" id="need_photography" name="need_photography" class="toggle-input">
+              <label class="toggle-label" for="need_photography" style="display:flex;justify-content:space-between;align-items:center;width:100%;margin:0;cursor:pointer;">
+                <div>
+                  <div style="font-weight:600;font-size:0.9rem;color:var(--text-primary);display:flex;align-items:center;gap:0.4rem;">
+                    <i data-lucide="camera" style="width:16px;height:16px;color:var(--primary)"></i> Photography / Video
+                  </div>
+                </div>
+                <div class="toggle-track"></div>
+              </label>
+            </div>
+
+            <!-- Entertainment -->
+            <div style="display:flex;align-items:center;background:var(--bg-main);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem 1rem;">
+              <input type="checkbox" id="need_entertainment" name="need_entertainment" class="toggle-input">
+              <label class="toggle-label" for="need_entertainment" style="display:flex;justify-content:space-between;align-items:center;width:100%;margin:0;cursor:pointer;">
+                <div>
+                  <div style="font-weight:600;font-size:0.9rem;color:var(--text-primary);display:flex;align-items:center;gap:0.4rem;">
+                    <i data-lucide="music" style="width:16px;height:16px;color:var(--primary)"></i> Entertainment / DJ
+                  </div>
+                </div>
+                <div class="toggle-track"></div>
+              </label>
+            </div>
+
+            <!-- Accommodation -->
+            <div style="display:flex;align-items:center;background:var(--bg-main);border:1px solid var(--border);border-radius:var(--radius-md);padding:0.75rem 1rem;">
+              <input type="checkbox" id="need_accommodation" name="need_accommodation" class="toggle-input">
+              <label class="toggle-label" for="need_accommodation" style="display:flex;justify-content:space-between;align-items:center;width:100%;margin:0;cursor:pointer;">
+                <div>
+                  <div style="font-weight:600;font-size:0.9rem;color:var(--text-primary);display:flex;align-items:center;gap:0.4rem;">
+                    <i data-lucide="bed" style="width:16px;height:16px;color:var(--primary)"></i> Accommodation / Stays
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;margin-left:1.4rem;">Include accommodation for guests</div>
+                </div>
+                <div class="toggle-track"></div>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Preferences -->
+        <div class="form-section">
+          <div class="form-section-title">Additional Preferences</div>
+          <div class="form-group">
+            <label class="form-label" for="additional_preferences">Any specific requests? (optional)</label>
+            <textarea class="form-control" id="additional_preferences" name="additional_preferences"
+              placeholder="e.g. Theme is Bollywood, need photography, prefer home-cooked food, guest from out of town..."
+              rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <p style="font-size:0.8rem;color:var(--text-muted);margin:0;display:flex;align-items:center;gap:0.4rem">
+            <i data-lucide="zap" style="width:14px;height:14px;color:var(--gold)"></i>
+            Gemini AI will create your event plan
+          </p>
+          <button type="submit" class="btn btn-primary btn-lg" id="party-submit-btn" style="display:flex;align-items:center;gap:0.5rem">
+            <i data-lucide="brain" style="width:18px;height:18px"></i>
+            Generate Event Plan
+          </button>
+        </div>
+
+      </div>
+    </form>
+
+    <!-- Results -->
+    <div id="results-section" class="mt-xl" style="display:none">
+      <div class="results-header">
+        <h2>Your Event Plan</h2>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <span class="badge badge-ai">✨ AI Generated</span>
+          <span class="badge badge-est">Estimated Prices</span>
+        </div>
+      </div>
+      <div id="results-budget-overview"></div>
+      <div id="results-summary"></div>
+      <div id="results-allocation"></div>
+      <div id="results-recommendations"></div>
+      <div id="results-notes"></div>
+      <div class="mt-xl" style="text-align:center">
+        <a href="/history" class="btn btn-secondary" id="btn-view-history-party">View All History →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  setupPlannerForm('party-planner-form', '/generate-party', 'party');
+
+  // Toggle styling for checkboxes in toggle-label style
+  document.querySelectorAll('.toggle-input').forEach(input => {
+    const label = document.querySelector(`label[for="${input.id}"]`);
+    if (!label) return;
+    input.addEventListener('change', () => label.classList.toggle('active', input.checked));
+  });
+});
+</script>
+{% endblock %}

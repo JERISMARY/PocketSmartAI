@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — PocketSmart AI{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<div class="dashboard-banner">
+  <div class="container">
+    <h1>Welcome, {{ user.name }}!</h1>
+    <p>Choose a budget planner to get started with your personalized financial planning experience</p>
+  </div>
+</div>
+
+<div class="dashboard-cards">
+  <!-- Home Planner -->
+  <a href="/home-planner" class="planner-card">
+    <div class="planner-card-img slideshow" style="background: linear-gradient(135deg, #1b3a57 0%, #2d6a9f 100%);">
+      <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800" alt="Home Interior 1" class="slide active">
+      <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" alt="Home Interior 2" class="slide">
+      <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&q=80&w=800" alt="Home Interior 3" class="slide">
+    </div>
+    <div class="planner-card-body">
+      <h3 class="planner-card-title">🏠 Home Budget Planner</h3>
+      <p class="planner-card-desc">Plan your interior design budget efficiently with AI-powered recommendations for furniture, lighting, and more.</p>
+      <span class="btn btn-primary" style="width: 100%;">Get Started</span>
+    </div>
+  </a>
+
+  <!-- Party Planner -->
+  <a href="/party-planner" class="planner-card">
+    <div class="planner-card-img slideshow" style="background: linear-gradient(135deg, #7c2d12 0%, #dc2626 50%, #f97316 100%);">
+      <img src="https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Party Setup 1" class="slide active">
+      <img src="https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Party Setup 2" class="slide">
+      <img src="https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Party Setup 3" class="slide">
+    </div>
+    <div class="planner-card-body">
+      <h3 class="planner-card-title">🎉 Party Budget Planner</h3>
+      <p class="planner-card-desc">Plan your perfect event with budget allocations for venue, catering, decorations, and entertainment.</p>
+      <span class="btn btn-primary" style="width: 100%;">Get Started</span>
+    </div>
+  </a>
+
+  <!-- Jewelry Planner -->
+  <a href="/jewelry-planner" class="planner-card">
+    <div class="planner-card-img slideshow" style="background: linear-gradient(135deg, #312e81 0%, #7c3aed 100%);">
+      <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800" alt="Jewelry 1" class="slide active">
+      <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&q=80&w=800" alt="Jewelry 2" class="slide">
+      <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800" alt="Jewelry 3" class="slide">
+    </div>
+    <div class="planner-card-body">
+      <h3 class="planner-card-title">💎 Jewelry Budget Planner</h3>
+      <p class="planner-card-desc">Find the ideal jewelry pieces for any occasion that match your outfit and stay within your budget.</p>
+      <span class="btn btn-primary" style="width: 100%;">Get Started</span>
+    </div>
+  </a>
+</div>
+
+<style>
+  .planner-card-img.slideshow img.slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out, transform 0.4s ease;
+  }
+  .planner-card-img.slideshow img.slide.active {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const slideshows = document.querySelectorAll('.slideshow');
+    slideshows.forEach(slideshow => {
+      let currentIndex = 0;
+      const slides = slideshow.querySelectorAll('.slide');
+      
+      setInterval(() => {
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add('active');
+      }, 10000); // 10 seconds
+    });
+  });
+</script>
+
+<div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="/history" class="btn btn-outline" style="border-radius: 99px;">
+      View All Recommendation History →
+    </a>
+  </div>
+
+  <div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
+      <i data-lucide="clock" style="width:18px;height:18px;color:var(--primary)"></i>
+      <h3 style="margin:0;">Recent Activity</h3>
+    </div>
+    
+    {% if history %}
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      {% for entry in history %}
+        <div class="history-item" style="margin-bottom:0">
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <div class="history-type {{ entry.planner_type }}">
+              {% if entry.planner_type == 'home' %}
+                <i data-lucide="sofa" style="width:12px;height:12px"></i> Home
+              {% elif entry.planner_type == 'party' %}
+                <i data-lucide="party-popper" style="width:12px;height:12px"></i> Party
+              {% else %}
+                <i data-lucide="gem" style="width:12px;height:12px"></i> Jewelry
+              {% endif %}
+            </div>
+            <div>
+              <div style="font-size:0.85rem;color:var(--text-secondary);">
+                Budget: <span style="font-weight:700;color:var(--text-primary);">₹{{ "{:,.0f}".format(entry.budget) }}</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">
+            {{ entry.created_at.strftime('%b %d, %Y') }}
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div style="text-align:center;padding:3rem 0;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;opacity:0.5;">📝</div>
+        <p style="color:var(--text-muted);margin:0;">No recent activity found. Generate a plan to see it here.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

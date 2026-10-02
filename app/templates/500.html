@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Server Error — PocketSmart AI{% endblock %}
+{% block content %}
+<div style="min-height:70vh;display:flex;align-items:center;justify-content:center">
+  <div class="empty-state">
+    <div class="empty-state-icon">⚠️</div>
+    <h1 style="font-size:5rem;font-family:'Outfit',sans-serif;font-weight:800;color:var(--border);line-height:1">500</h1>
+    <h3 style="margin-bottom:0.5rem">Something Went Wrong</h3>
+    <p style="margin-bottom:2rem">An unexpected error occurred. Please try again in a moment.</p>
+    <a href="/" class="btn btn-primary" id="btn-500-home">← Back to Home</a>
+  </div>
+</div>
+{% endblock %}

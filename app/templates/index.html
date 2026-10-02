@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}PocketSmart AI — Plan Smarter. Spend Better.{% endblock %}
+
+{% block content %}
+<!-- Hero Section (Blue Background) -->
+<section class="hero" style="background-color: var(--primary); padding: 5rem 1rem;">
+  <div class="container text-center">
+    <h1 style="font-size: 3rem; margin-bottom: 1rem; color: white;">PocketSmart</h1>
+    <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: white; font-weight: 500;">AI-Powered Budget Planning for Everyday Needs</h2>
+    <p style="color: #e2e8f0; max-width: 700px; margin: 0 auto 2.5rem; font-size: 1.1rem; line-height: 1.6;">
+      Make smarter financial decisions with personalized budget recommendations for home interiors, parties, and jewelry purchases. Our AI helps you get the most value for your money.
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+      <a href="/register" class="btn" style="background-color: white; color: var(--primary); font-weight: 600; padding: 0.8rem 2rem;">Get Started</a>
+      <a href="#planners" class="btn" style="background-color: transparent; border: 2px solid white; color: white; padding: 0.8rem 2rem;">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- Planners Section -->
+<section id="planners" style="padding: 5rem 1rem; background-color: var(--bg-main);">
+  <div class="container text-center">
+    <h2 style="font-size: 2.25rem; color: var(--primary); margin-bottom: 0.5rem;">Our Smart Budget Planners</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 3rem;">Discover how PocketSmart helps you make better financial decisions across different areas of your life</p>
+    
+    <div class="grid grid-3">
+      <!-- Home Planner -->
+      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
+        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
+          🏠
+        </div>
+        <div style="padding: 2rem; flex: 1;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Home Interior Budget Planner</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Get personalized recommendations for furniture, lighting, and decor that fit your style preferences and budget constraints. Our AI helps you create a beautiful space without overspending.</p>
+        </div>
+      </div>
+
+      <!-- Party Planner -->
+      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
+        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
+          🎉
+        </div>
+        <div style="padding: 2rem; flex: 1;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Party Budget Planner</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Plan your perfect event with smart budget allocations for venue, catering, decorations, and entertainment. Our AI suggests the best ways to create memorable events while staying within your budget.</p>
+        </div>
+      </div>
+
+      <!-- Jewelry Planner -->
+      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
+        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
+          💎
+        </div>
+        <div style="padding: 2rem; flex: 1;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Jewelry Budget Planner</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Find the ideal jewelry pieces for any occasion that match your outfit and budget. Our AI recommends options based on your style preferences, occasion, and available budget.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Banner -->
+<section style="background-color: var(--primary); padding: 4rem 1rem; text-align: center; color: white;">
+  <div class="container">
+    <h2 style="font-size: 2.25rem; margin-bottom: 1rem; color: white;">Ready to Optimize Your Budget?</h2>
+    <p style="color: #e2e8f0; margin-bottom: 2rem;">Join PocketSmart today and start making smarter financial decisions across all areas of your life.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+      <a href="/login" class="btn" style="background-color: white; color: var(--primary); padding: 0.8rem 2rem; font-weight: 600;">Sign In</a>
+      <a href="/register" class="btn" style="background-color: transparent; border: 2px solid white; color: white; padding: 0.8rem 2rem;">Create Account</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
