@@ -56,4 +56,4 @@ async def get_history_entry_detail(entry_id: str, request: Request):
     if not entry:
         return JSONResponse({"error": "History entry not found"}, status_code=404)
 
-    return JSONResponse(entry.model_dump())
+    return JSONResponse(entry.model_dump(mode='json'))

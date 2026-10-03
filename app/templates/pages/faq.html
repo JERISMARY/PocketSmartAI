@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}FAQ — PocketSmart AI{% endblock %}
+{% block meta_description %}Frequently asked questions about PocketSmart AI budget planning.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:900px">
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="help-circle" style="width:28px;height:28px;color:var(--primary)"></i>
+        Frequently Asked Questions
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem">Got questions? We've got answers.</p>
+    </div>
+    
+    <div class="card" style="padding:2rem">
+      <div style="margin-bottom:1.5rem">
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem">How does the AI budget planner work?</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem">We use Google's Gemini AI to analyze your inputs (like budget, style, and images) to generate a realistic budget breakdown and curated product recommendations tailored to your specific needs.</p>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem">Is it free to use?</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem">Yes! We offer a generous Free tier that allows you to generate up to 5 AI budget plans per day. If you need more, you can upgrade to our Pro plan.</p>
+      </div>
+      <div style="margin-bottom:1.5rem">
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem">Are the estimated prices accurate?</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem">The prices provided are estimates based on current market trends for the Indian market (₹). Actual prices may vary depending on the specific brand or retailer you choose.</p>
+      </div>
+      <div style="margin-bottom:0">
+        <h4 style="color:var(--text-primary);margin-bottom:0.5rem">Is my data secure?</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem">Yes, your data is securely stored. We use industry-standard encryption, and your uploaded images are only processed for the duration of the AI analysis and are not stored permanently.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

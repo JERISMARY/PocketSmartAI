@@ -18,44 +18,55 @@
 </section>
 
 <!-- Planners Section -->
-<section id="planners" style="padding: 5rem 1rem; background-color: var(--bg-main);">
+<section id="planners" style="padding: 6rem 1rem; background-color: var(--bg-main);">
   <div class="container text-center">
-    <h2 style="font-size: 2.25rem; color: var(--primary); margin-bottom: 0.5rem;">Our Smart Budget Planners</h2>
-    <p style="color: var(--text-secondary); margin-bottom: 3rem;">Discover how PocketSmart helps you make better financial decisions across different areas of your life</p>
+    <h2 style="font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+      <i data-lucide="sparkles" style="width:32px;height:32px;color:var(--primary)"></i> Our Smart Budget Planners
+    </h2>
+    <p style="color: var(--text-secondary); margin-bottom: 4rem; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.05rem; line-height: 1.6;">Discover how PocketSmart helps you make better financial decisions across different areas of your life.</p>
     
-    <div class="grid grid-3">
+    <div class="grid grid-3" style="gap: 2rem;">
       <!-- Home Planner -->
-      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
-        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
-          🏠
+      <a href="/home-planner" class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column; text-decoration: none; border: 1px solid var(--border); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow-sm)'">
+        <div style="background: linear-gradient(135deg, #1b3a57 0%, #2d6a9f 100%); color: white; padding: 3rem 2rem; text-align: center; display: flex; align-items: center; justify-content: center;">
+          <i data-lucide="sofa" style="width:64px;height:64px;opacity:0.9"></i>
         </div>
-        <div style="padding: 2rem; flex: 1;">
-          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Home Interior Budget Planner</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Get personalized recommendations for furniture, lighting, and decor that fit your style preferences and budget constraints. Our AI helps you create a beautiful space without overspending.</p>
+        <div style="padding: 2rem; flex: 1; display: flex; flex-direction: column;">
+          <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between;">Home Interior <i data-lucide="arrow-right" style="width:18px;height:18px;color:var(--primary)"></i></h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">Get personalized recommendations for furniture, lighting, and decor that fit your style preferences and budget constraints. Our AI helps you create a beautiful space without overspending.</p>
+          <div style="margin-top: auto; font-weight: 700; color: var(--primary); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;">
+            Try Home Planner
+          </div>
         </div>
-      </div>
+      </a>
 
       <!-- Party Planner -->
-      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
-        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
-          🎉
+      <a href="/party-planner" class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column; text-decoration: none; border: 1px solid var(--border); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow-sm)'">
+        <div style="background: linear-gradient(135deg, #7c2d12 0%, #dc2626 50%, #f97316 100%); color: white; padding: 3rem 2rem; text-align: center; display: flex; align-items: center; justify-content: center;">
+          <i data-lucide="party-popper" style="width:64px;height:64px;opacity:0.9"></i>
         </div>
-        <div style="padding: 2rem; flex: 1;">
-          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Party Budget Planner</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Plan your perfect event with smart budget allocations for venue, catering, decorations, and entertainment. Our AI suggests the best ways to create memorable events while staying within your budget.</p>
+        <div style="padding: 2rem; flex: 1; display: flex; flex-direction: column;">
+          <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between;">Party Events <i data-lucide="arrow-right" style="width:18px;height:18px;color:var(--primary)"></i></h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">Plan your perfect event with smart budget allocations for venue, catering, decorations, and entertainment. Our AI suggests the best ways to create memorable events.</p>
+          <div style="margin-top: auto; font-weight: 700; color: var(--primary); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;">
+            Try Party Planner
+          </div>
         </div>
-      </div>
+      </a>
 
       <!-- Jewelry Planner -->
-      <div class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column;">
-        <div style="background-color: var(--primary); color: white; padding: 2rem; text-align: center; font-size: 3rem;">
-          💎
+      <a href="/jewelry-planner" class="card" style="padding: 0; overflow: hidden; text-align: left; display: flex; flex-direction: column; text-decoration: none; border: 1px solid var(--border); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='var(--shadow-sm)'">
+        <div style="background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 50%, #d946ef 100%); color: white; padding: 3rem 2rem; text-align: center; display: flex; align-items: center; justify-content: center;">
+          <i data-lucide="gem" style="width:64px;height:64px;opacity:0.9"></i>
         </div>
-        <div style="padding: 2rem; flex: 1;">
-          <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.25rem;">Jewelry Budget Planner</h3>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Find the ideal jewelry pieces for any occasion that match your outfit and budget. Our AI recommends options based on your style preferences, occasion, and available budget.</p>
+        <div style="padding: 2rem; flex: 1; display: flex; flex-direction: column;">
+          <h3 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between;">Jewelry Shopping <i data-lucide="arrow-right" style="width:18px;height:18px;color:var(--primary)"></i></h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem;">Find the ideal jewelry pieces for any occasion that match your outfit and budget. Our AI recommends options based on your style preferences and available budget.</p>
+          <div style="margin-top: auto; font-weight: 700; color: var(--primary); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;">
+            Try Jewelry Planner
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>

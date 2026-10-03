@@ -3,7 +3,7 @@ PocketSmart AI — Application Entry Point
 Run with: uvicorn app.main:app --reload
 Or simply: python run.py
 """
-import uvicorn
+import uvicorn 
 
 if __name__ == "__main__":
     uvicorn.run(

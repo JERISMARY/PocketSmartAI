@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Pricing — PocketSmart AI{% endblock %}
+{% block meta_description %}PocketSmart AI pricing plans. Start free and unlock premium AI budget planning features.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:1000px">
+
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="credit-card" style="width:28px;height:28px;color:var(--primary)"></i>
+        Simple, Transparent Pricing
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem">Start free. Upgrade when you need more.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2rem">
+
+      <!-- Free Plan -->
+      <div class="card" style="padding:2rem;text-align:center;border:2px solid var(--border)">
+        <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:700;margin-bottom:0.5rem">Free</div>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--text-primary);margin-bottom:0.25rem">₹0</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem">Forever free</div>
+        <ul style="list-style:none;padding:0;text-align:left;font-size:0.85rem;color:var(--text-secondary);margin-bottom:2rem">
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> 5 AI plans per day</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> All 3 planners</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> History (last 10)</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="x" style="width:16px;height:16px;color:var(--text-muted)"></i> <span style="color:var(--text-muted)">Image analysis</span></li>
+        </ul>
+        <a href="/register" class="btn btn-outline" style="width:100%">Get Started</a>
+      </div>
+
+      <!-- Pro Plan -->
+      <div class="card" style="padding:2rem;text-align:center;border:2px solid var(--primary);position:relative">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;font-size:0.7rem;padding:0.25rem 1rem;border-radius:99px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em">Most Popular</div>
+        <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--primary);font-weight:700;margin-bottom:0.5rem">Pro</div>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--text-primary);margin-bottom:0.25rem">₹199<span style="font-size:1rem;font-weight:400;color:var(--text-muted)">/mo</span></div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem">Best for regular planners</div>
+        <ul style="list-style:none;padding:0;text-align:left;font-size:0.85rem;color:var(--text-secondary);margin-bottom:2rem">
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Unlimited AI plans</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> All 3 planners</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Unlimited history</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Image analysis</li>
+        </ul>
+        <a href="/register" class="btn btn-primary" style="width:100%">Start Pro Trial</a>
+      </div>
+
+      <!-- Enterprise Plan -->
+      <div class="card" style="padding:2rem;text-align:center;border:2px solid var(--border)">
+        <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:700;margin-bottom:0.5rem">Enterprise</div>
+        <div style="font-size:2.5rem;font-weight:800;color:var(--text-primary);margin-bottom:0.25rem">Custom</div>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem">For organizations</div>
+        <ul style="list-style:none;padding:0;text-align:left;font-size:0.85rem;color:var(--text-secondary);margin-bottom:2rem">
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Everything in Pro</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Custom AI models</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> Priority support</li>
+          <li style="padding:0.4rem 0;display:flex;align-items:center;gap:0.5rem"><i data-lucide="check" style="width:16px;height:16px;color:var(--success)"></i> API access</li>
+        </ul>
+        <a href="/contact" class="btn btn-outline" style="width:100%">Contact Sales</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

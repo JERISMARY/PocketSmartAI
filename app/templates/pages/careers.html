@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Careers — PocketSmart AI{% endblock %}
+{% block meta_description %}Join the PocketSmart AI team. Explore open positions in AI, engineering, and design.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:900px">
+
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="briefcase" style="width:28px;height:28px;color:var(--primary)"></i>
+        Careers at PocketSmart AI
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem">Build the future of AI-powered budget planning with us.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:1.5rem">
+      <h3 style="color:var(--primary);margin-bottom:1rem">Why Work With Us?</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem">
+        <div>
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">🧠</div>
+          <h4 style="font-size:0.9rem;margin-bottom:0.25rem">AI-First Culture</h4>
+          <p style="font-size:0.8rem;color:var(--text-muted)">Work with cutting-edge Gemini AI technology every day.</p>
+        </div>
+        <div>
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">🌱</div>
+          <h4 style="font-size:0.9rem;margin-bottom:0.25rem">Growth Opportunities</h4>
+          <p style="font-size:0.8rem;color:var(--text-muted)">Learn, grow, and shape the direction of our products.</p>
+        </div>
+        <div>
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">🤝</div>
+          <h4 style="font-size:0.9rem;margin-bottom:0.25rem">Collaborative Team</h4>
+          <p style="font-size:0.8rem;color:var(--text-muted)">A small, tight-knit team where your ideas matter.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:1.5rem">
+      <h3 style="color:var(--primary);margin-bottom:1rem">Open Positions</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <div style="padding:1rem;background:var(--bg-main);border-radius:var(--radius-md);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem">
+          <div>
+            <div style="font-weight:700;color:var(--text-primary)">Full-Stack Developer (Python/FastAPI)</div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Remote · Full-time</div>
+          </div>
+          <a href="/contact" class="btn btn-outline btn-sm">Apply →</a>
+        </div>
+        <div style="padding:1rem;background:var(--bg-main);border-radius:var(--radius-md);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem">
+          <div>
+            <div style="font-weight:700;color:var(--text-primary)">UI/UX Designer</div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Remote · Full-time</div>
+          </div>
+          <a href="/contact" class="btn btn-outline btn-sm">Apply →</a>
+        </div>
+        <div style="padding:1rem;background:var(--bg-main);border-radius:var(--radius-md);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem">
+          <div>
+            <div style="font-weight:700;color:var(--text-primary)">AI/ML Intern</div>
+            <div style="font-size:0.8rem;color:var(--text-muted)">Remote · Internship</div>
+          </div>
+          <a href="/contact" class="btn btn-outline btn-sm">Apply →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;padding:2rem">
+      <p style="color:var(--text-muted)">Don't see a role that fits? Send us your resume anyway!</p>
+      <a href="/contact" class="btn btn-primary" style="margin-top:0.75rem">Contact Us →</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

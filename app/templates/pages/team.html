@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Our Team — PocketSmart AI{% endblock %}
+{% block meta_description %}Meet the talented team behind PocketSmart AI.{% endblock %}
+
+{% block head_extra %}
+<style>
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .team-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -1px;
+  }
+  .team-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+  .team-role {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .team-email {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+  .team-email a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .team-email a:hover { color: var(--primary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:1000px">
+
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="users" style="width:28px;height:28px;color:var(--primary)"></i>
+        Our Team
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem;max-width:600px;margin-left:auto;margin-right:auto">
+        The passionate people building PocketSmart AI — dedicated to making budget planning smarter for everyone.
+      </p>
+    </div>
+
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-avatar">JK</div>
+        <div class="team-name">Jerismary K</div>
+        <div class="team-role">Lead Developer</div>
+        <div class="team-email">
+          <i data-lucide="mail" style="width:13px;height:13px"></i>
+          <a href="mailto:jerismary3@gmail.com">jerismary3@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">KM</div>
+        <div class="team-name">Kalaiselvi M</div>
+        <div class="team-role">Backend Engineer</div>
+        <div class="team-email">
+          <i data-lucide="mail" style="width:13px;height:13px"></i>
+          <a href="mailto:kalaiselvimurugan1325@gmail.com">kalaiselvimurugan1325@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">KS</div>
+        <div class="team-name">Kamali S</div>
+        <div class="team-role">AI/ML Engineer</div>
+        <div class="team-email">
+          <i data-lucide="mail" style="width:13px;height:13px"></i>
+          <a href="mailto:kamalisakthimurugan@gmail.com">kamalisakthimurugan@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">KE</div>
+        <div class="team-name">Kavipriya E</div>
+        <div class="team-role">UI/UX Designer</div>
+        <div class="team-email">
+          <i data-lucide="mail" style="width:13px;height:13px"></i>
+          <a href="mailto:kaviarasuk526@gmail.com">kaviarasuk526@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">KM</div>
+        <div class="team-name">Kavitha M</div>
+        <div class="team-role">Frontend Developer</div>
+        <div class="team-email">
+          <i data-lucide="mail" style="width:13px;height:13px"></i>
+          <a href="mailto:kavitham162007@gmail.com">kavitham162007@gmail.com</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card" style="text-align:center;padding:2.5rem;margin-top:2.5rem">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem">Want to join us?</h3>
+      <p style="color:var(--text-muted);margin-bottom:1.5rem">We're always looking for talented people to join our team.</p>
+      <a href="/careers" class="btn btn-primary">View Open Positions →</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

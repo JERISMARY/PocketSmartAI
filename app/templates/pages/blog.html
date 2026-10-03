@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Blog — PocketSmart AI{% endblock %}
+{% block meta_description %}Read the latest articles on budget planning, AI, and smart financial decisions.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:900px">
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="file-text" style="width:28px;height:28px;color:var(--primary)"></i>
+        PocketSmart Blog
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem">Insights and tips for smarter budget planning.</p>
+    </div>
+    
+    <div class="card" style="padding:4rem 2rem;text-align:center">
+      <i data-lucide="newspaper" style="width:48px;height:48px;color:var(--border);margin-bottom:1rem"></i>
+      <h3>Coming Soon</h3>
+      <p style="color:var(--text-muted)">We're working on some great articles for you. Check back soon!</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}About Us — PocketSmart AI{% endblock %}
+{% block meta_description %}Learn about PocketSmart AI — your smart budget and recommendation assistant powered by Google Gemini.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:900px">
+
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="building-2" style="width:28px;height:28px;color:var(--primary)"></i>
+        About PocketSmart AI
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem;max-width:600px;margin-left:auto;margin-right:auto">
+        Empowering smarter financial decisions through AI-powered budget planning tools.
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:2rem">
+      <h3 style="color:var(--primary);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem">
+        <i data-lucide="target" style="width:20px;height:20px"></i> Our Mission
+      </h3>
+      <p style="color:var(--text-secondary);line-height:1.8;font-size:0.95rem">
+        At PocketSmart AI, we believe that smart financial planning should be accessible to everyone. 
+        Our platform leverages the power of Google's Gemini AI to provide personalized budget recommendations 
+        for home interiors, events, and jewelry — all within your budget.
+      </p>
+      <p style="color:var(--text-secondary);line-height:1.8;font-size:0.95rem;margin-top:1rem">
+        Whether you're furnishing a new home, planning a wedding, or shopping for the perfect jewelry set, 
+        PocketSmart AI acts as your personal AI financial advisor, giving you detailed breakdowns, 
+        smart allocations, and curated product suggestions.
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;margin-bottom:2rem">
+      <div class="card" style="text-align:center;padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">🚀</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Innovation</h4>
+        <p style="color:var(--text-muted);font-size:0.85rem">We use cutting-edge Gemini AI to deliver personalized, accurate budget recommendations.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">🎯</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Precision</h4>
+        <p style="color:var(--text-muted);font-size:0.85rem">Every recommendation is tailored to your specific needs, style, and budget constraints.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">💡</div>
+        <h4 style="color:var(--primary);margin-bottom:0.5rem">Simplicity</h4>
+        <p style="color:var(--text-muted);font-size:0.85rem">Complex financial planning made simple with an intuitive, beautiful interface.</p>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;padding:2.5rem">
+      <h3 style="color:var(--primary);margin-bottom:0.75rem">Ready to plan smarter?</h3>
+      <p style="color:var(--text-muted);margin-bottom:1.5rem">Join thousands of users who trust PocketSmart AI for their budget planning needs.</p>
+      <a href="/register" class="btn btn-primary btn-lg">Get Started Free →</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

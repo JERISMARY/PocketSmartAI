@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Support — PocketSmart AI{% endblock %}
+{% block meta_description %}Get help and support for PocketSmart AI.{% endblock %}
+
+{% block content %}
+<div class="planner-page">
+  <div class="container" style="max-width:900px">
+    <div class="planner-header" style="text-align:center">
+      <h1 style="font-size:clamp(1.5rem,3vw,2.25rem);display:flex;align-items:center;justify-content:center;gap:0.5rem">
+        <i data-lucide="life-buoy" style="width:28px;height:28px;color:var(--primary)"></i>
+        Help & Support
+      </h1>
+      <p style="color:var(--text-muted);margin-top:0.5rem">We're here to help you get the most out of PocketSmart.</p>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem">
+      <div class="card" style="padding:2rem;text-align:center">
+        <i data-lucide="help-circle" style="width:32px;height:32px;color:var(--primary);margin-bottom:1rem"></i>
+        <h4>Check our FAQ</h4>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem">Find answers to the most common questions.</p>
+        <a href="/faq" class="btn btn-outline btn-sm">Read FAQ</a>
+      </div>
+      <div class="card" style="padding:2rem;text-align:center">
+        <i data-lucide="mail" style="width:32px;height:32px;color:var(--primary);margin-bottom:1rem"></i>
+        <h4>Contact Support</h4>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem">Can't find what you need? Send us a message.</p>
+        <a href="/contact" class="btn btn-primary btn-sm">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

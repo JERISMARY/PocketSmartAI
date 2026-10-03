@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.routes import auth, home, home_planner, party, jewelry, history
+from app.routes import auth, home, home_planner, party, jewelry, history, pages
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -53,6 +53,7 @@ app.include_router(home_planner.router)
 app.include_router(party.router)
 app.include_router(jewelry.router)
 app.include_router(history.router)
+app.include_router(pages.router)
 
 # ─── Global Exception Handler ─────────────────────────────────────────────────
 @app.exception_handler(404)

@@ -3,7 +3,6 @@ PocketSmart AI — Central Configuration
 All application settings loaded from environment variables.
 """
 import os
-import secrets
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
@@ -18,8 +17,8 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-1.5-flash"
 
     # JWT
-    secret_key: str = secrets.token_hex(32)
-    access_token_expire_minutes: int = 60
+    secret_key: str = "pocketsmart-fallback-secret-key-change-in-production-2024"
+    access_token_expire_minutes: int = 10080  # 7 days
     algorithm: str = "HS256"
 
     # CORS
