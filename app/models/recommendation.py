@@ -7,9 +7,6 @@ from typing import Optional, List, Any
 from datetime import datetime
 from enum import Enum
 import uuid
-import json
-import os
-from pathlib import Path
 
 
 class PlannerType(str, Enum):
@@ -63,33 +60,8 @@ class HistoryEntry(BaseModel):
     created_at: datetime
 
 
-# ─── Persistent File Store ─────────────────────────────────────────────────
-DATA_DIR = Path("data")
-DATA_DIR.mkdir(exist_ok=True)
-HISTORY_FILE = DATA_DIR / "history.json"
-
+# ─── In-Memory History Store ─────────────────────────────────────────────────
 _history_db: list[HistoryEntry] = []
-
-def _load_history():
-    global _history_db
-    if HISTORY_FILE.exists():
-        try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                _history_db = [HistoryEntry(**item) for item in data]
-        except Exception as e:
-            print(f"Error loading history: {e}")
-            _history_db = []
-
-def _save_history():
-    try:
-        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-            json.dump([entry.model_dump(mode='json') for entry in _history_db], f, indent=2)
-    except Exception as e:
-        print(f"Error saving history: {e}")
-
-# Load initially
-_load_history()
 
 def save_history(user_id: str, planner_type: PlannerType, input_summary: str,
                  budget: float, result: PlannerResult) -> HistoryEntry:
@@ -103,7 +75,6 @@ def save_history(user_id: str, planner_type: PlannerType, input_summary: str,
         created_at=datetime.utcnow(),
     )
     _history_db.append(entry)
-    _save_history()
     return entry
 
 def get_user_history(user_id: str) -> list[HistoryEntry]:

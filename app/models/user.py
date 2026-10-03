@@ -6,9 +6,6 @@ from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 from datetime import datetime
 import uuid
-import json
-import os
-from pathlib import Path
 
 
 class UserCreate(BaseModel):
@@ -66,34 +63,9 @@ class UserInDB(BaseModel):
     created_at: datetime
 
 
-# ─── Persistent File Store ────────────────────────────────────────────────────
-# Keyed by email (lowercase).
-DATA_DIR = Path("data")
-DATA_DIR.mkdir(exist_ok=True)
-USERS_FILE = DATA_DIR / "users.json"
-
+# ─── In-Memory User Store ────────────────────────────────────────────────────
+# Keyed by email (lowercase). Replace with SQLite/PostgreSQL for production.
 _users_db: dict[str, UserInDB] = {}
-
-def _load_users():
-    global _users_db
-    if USERS_FILE.exists():
-        try:
-            with open(USERS_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                _users_db = {email: UserInDB(**user_data) for email, user_data in data.items()}
-        except Exception as e:
-            print(f"Error loading users: {e}")
-            _users_db = {}
-
-def _save_users():
-    try:
-        with open(USERS_FILE, "w", encoding="utf-8") as f:
-            json.dump({email: user.model_dump(mode='json') for email, user in _users_db.items()}, f, indent=2)
-    except Exception as e:
-        print(f"Error saving users: {e}")
-
-# Load initially
-_load_users()
 
 def get_user_by_email(email: str) -> Optional[UserInDB]:
     return _users_db.get(email.lower())
@@ -107,7 +79,6 @@ def create_user(name: str, email: str, hashed_password: str) -> UserInDB:
         created_at=datetime.utcnow(),
     )
     _users_db[email.lower()] = user
-    _save_users()
     return user
 
 def user_exists(email: str) -> bool:
