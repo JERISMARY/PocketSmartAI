@@ -36,10 +36,14 @@ async def history_page(request: Request):
     user_id = ctx["user"]["id"]
     history = get_user_history(user_id)
 
+    import json
+    history_json = json.dumps([e.model_dump(mode='json') for e in history])
+
     return templates.TemplateResponse("history.html", {
         "request": request,
         **ctx,
         "history": history,
+        "history_json": history_json,
     })
 
 

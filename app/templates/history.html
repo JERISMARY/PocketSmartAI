@@ -105,16 +105,18 @@
 
 {% block scripts %}
 <script>
+const HISTORY_DATA = {{ history_json | safe }};
+
 async function viewHistoryEntry(entryId) {
   const modal = document.getElementById('history-modal');
   const content = document.getElementById('modal-content');
-  content.innerHTML = '<div style="text-align:center;padding:2rem"><div class="spinner" style="margin:0 auto"></div></div>';
+  
   modal.style.display = 'block';
 
   try {
-    const resp = await fetch(`/history/${entryId}`, { credentials: 'include' });
-    if (!resp.ok) throw new Error('Could not load entry');
-    const data = await resp.json();
+    const data = HISTORY_DATA.find(e => e.id === entryId);
+    if (!data) throw new Error('Could not load entry');
+    
     const result = data.result;
     const bs = result.budget_summary;
 
